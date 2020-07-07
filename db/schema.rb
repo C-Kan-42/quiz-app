@@ -10,31 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170727020351) do
+ActiveRecord::Schema.define(version: 2020_07_07_202457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "items", force: :cascade do |t|
-    t.integer "pokemon_id", null: false
-    t.string "name", null: false
-    t.integer "price", null: false
-    t.integer "happiness", null: false
-    t.string "image_url", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["pokemon_id"], name: "index_items_on_pokemon_id"
+  create_table "questions", force: :cascade do |t|
+    t.text "title"
+    t.integer "quiz_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
   end
 
-  create_table "pokemons", force: :cascade do |t|
-    t.string "name", null: false
-    t.integer "attack", null: false
-    t.integer "defense", null: false
-    t.string "poke_type", null: false
-    t.string "moves", default: [], null: false, array: true
-    t.string "image_url", null: false
+  create_table "quizzes", force: :cascade do |t|
+    t.string "title"
+    t.string "owner_email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_answers", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "question_id"
+    t.integer "response_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text "answer"
+    t.integer "score"
+    t.index ["question_id"], name: "index_user_answers_on_question_id"
+    t.index ["user_id"], name: "index_user_answers_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
 end
